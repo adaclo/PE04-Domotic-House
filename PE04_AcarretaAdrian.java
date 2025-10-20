@@ -51,10 +51,20 @@ public class PE04_AcarretaAdrian {
                     }
                     break;
                 case "b":
-                    //controlAllRooms();
+                    validOpt=false;
+                    while (validOpt==false) {
+                        System.out.println("Manual - turn on or off: (on/off)");
+                        r = s.next();
+                        if (r.equals("on") || r.equals("off")) {
+                            validOpt=true;
+                            controlAllRooms(r);
+                        } else {
+                            System.out.println("\n(!) Invalid option.\n");
+                        }
+                    }
                     break;
                 case "c":
-                    //showRooms();
+                    showRooms();
                     break;
                 case "d":
                     menu = false;
@@ -64,6 +74,7 @@ public class PE04_AcarretaAdrian {
                     break;
             }
         }
+        s.close();
     }
     public static void controlRoom(String h, String r) {
         switch (h) {
@@ -173,6 +184,57 @@ public class PE04_AcarretaAdrian {
             default:
 
                 break;
+        }
+    }
+    public static void controlAllRooms(String r) {
+        if (r.equals("on")) {
+            H1=true;
+            H2=true;
+            H3=true;
+            bathroom=true;
+            kitchen=true;
+            living_room=true;
+            System.out.printf("All rooms successfully turned lights %s\n\n",r);
+        } else {
+            H1=false;
+            H2=false;
+            H3=false;
+            bathroom=false;
+            kitchen=false;
+            living_room=false;
+            System.out.printf("All rooms successfully turned lights %s\n\n",r);
+        }
+    }
+    public static void showRooms() {
+        if (H1) {
+            System.out.println("\nRoom - H1 - On");
+        } else {
+            System.out.println("\nRoom - H1 - Off");
+        }
+        if (H2) {
+            System.out.println("Room - H2 - On");
+        } else {
+            System.out.println("Room - H2 - Off");
+        }
+        if (H3) {
+            System.out.println("Room - H3 - On");
+        } else {
+            System.out.println("Room - H3 - Off");
+        }
+        if (bathroom) {
+            System.out.println("Room - Bathroom - On");
+        } else {
+            System.out.println("Room - Bathroom - Off");
+        }
+        if (kitchen) {
+            System.out.println("Room - Kitchen - On");
+        } else {
+            System.out.println("Room - Kitchen - Off");
+        }
+        if (living_room) {
+            System.out.println("Room - Living Room - On\n");
+        } else {
+            System.out.println("Room - Living Room - Off\n");
         }
     }
 }
