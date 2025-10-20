@@ -4,11 +4,11 @@ import java.util.Scanner;
 
 public class PE04_AcarretaAdrian {
     static Boolean H1 = false;
-    static Boolean H2;
-    static Boolean H3;
-    static Boolean bathroom;
-    static Boolean kitchen;
-    static Boolean livingRoom;
+    static Boolean H2 = false;
+    static Boolean H3 = false;
+    static Boolean bathroom = false;
+    static Boolean kitchen = false;
+    static Boolean living_room = false;
     static String r;
     static String h;
     static Boolean menu = true;
@@ -26,6 +26,8 @@ public class PE04_AcarretaAdrian {
             r = s.next();
             switch (r) {
                 case "a":
+                    validOpt=false;
+                    validRoom=false;
                     while (validRoom==false) {
                         System.out.println("Choose the room:");
                         h = s.next();
@@ -68,34 +70,109 @@ public class PE04_AcarretaAdrian {
             case "H1":
                 if (r.equals("on")) {
                     if (H1==true) {
-                        System.out.printf("Room - %s was already on.\n\n",h);
+                        System.out.printf("Room - %s was already %s.\n\n",h,r);
                     } else {
                         H1 = true;
+                        System.out.printf("Room - %s successfully turned %s\n\n",h,r);
+                    }
+                } else {
+                    if (H1==false) {
+                        System.out.printf("Room - %s was already %s.\n\n",h,r);
+                    } else {
+                        H1 = false;
                         System.out.printf("Room - %s successfully turned %s\n\n",h,r);
                     }
                 }
                 break;
             case "H2":
-                
+                if (r.equals("on")) {
+                    if (H2==true) {
+                        System.out.printf("Room - %s was already %s.\n\n",h,r);
+                    } else {
+                        H2 = true;
+                        System.out.printf("Room - %s successfully turned %s\n\n",h,r);
+                    }
+                } else {
+                    if (H2==false) {
+                        System.out.printf("Room - %s was already %s.\n\n",h,r);
+                    } else {
+                        H2 = false;
+                        System.out.printf("Room - %s successfully turned %s\n\n",h,r);
+                    }
+                }
                 break;
             case "H3":
-                
+                if (r.equals("on")) {
+                    if (H3==true) {
+                        System.out.printf("Room - %s was already %s.\n\n",h,r);
+                    } else {
+                        H3 = true;
+                        System.out.printf("Room - %s successfully turned %s\n\n",h,r);
+                    }
+                } else {
+                    if (H3==false) {
+                        System.out.printf("Room - %s was already %s.\n\n",h,r);
+                    } else {
+                        H3 = false;
+                        System.out.printf("Room - %s successfully turned %s\n\n",h,r);
+                    }
+                }
                 break;
             case "bathroom":
-                
+                if (r.equals("on")) {
+                    if (bathroom==true) {
+                        System.out.printf("Room - %s was already %s.\n\n",h,r);
+                    } else {
+                        bathroom = true;
+                        System.out.printf("Room - %s successfully turned %s\n\n",h,r);
+                    }
+                } else {
+                    if (bathroom==false) {
+                        System.out.printf("Room - %s was already %s.\n\n",h,r);
+                    } else {
+                        bathroom = false;
+                        System.out.printf("Room - %s successfully turned %s\n\n",h,r);
+                    }
+                }
                 break;
             case "kitchen":
-                
+                if (r.equals("on")) {
+                    if (kitchen==true) {
+                        System.out.printf("Room - %s was already %s.\n\n",h,r);
+                    } else {
+                        kitchen = true;
+                        System.out.printf("Room - %s successfully turned %s\n\n",h,r);
+                    }
+                } else {
+                    if (kitchen==false) {
+                        System.out.printf("Room - %s was already %s.\n\n",h,r);
+                    } else {
+                        kitchen = false;
+                        System.out.printf("Room - %s successfully turned %s\n\n",h,r);
+                    }
+                }
                 break;
             case "living_room":
-                
+                if (r.equals("on")) {
+                    if (living_room==true) {
+                        System.out.printf("Room - %s was already %s.\n\n",h,r);
+                    } else {
+                        living_room = true;
+                        System.out.printf("Room - %s successfully turned %s\n\n",h,r);
+                    }
+                } else {
+                    if (living_room==false) {
+                        System.out.printf("Room - %s was already %s.\n\n",h,r);
+                    } else {
+                        living_room = false;
+                        System.out.printf("Room - %s successfully turned %s\n\n",h,r);
+                    }
+                }
                 break;
         
             default:
 
                 break;
         }
-        validOpt = false;
-        validRoom = false;
     }
 }
