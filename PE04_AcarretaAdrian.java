@@ -17,7 +17,7 @@ public class PE04_AcarretaAdrian {
     static Scanner s = new Scanner(System.in);
 
     public static void main(String[] args) {
-        while (menu) {
+        do {
             System.out.println("Lights control:\n");
             System.out.println("  a. Control a room");
             System.out.println("  b. Control all the rooms");
@@ -73,7 +73,7 @@ public class PE04_AcarretaAdrian {
                 default:
                     break;
             }
-        }
+        } while (!r.equals("d"));
         s.close();
     }
     public static void controlRoom(String h, String r) {
