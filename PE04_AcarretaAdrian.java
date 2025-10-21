@@ -11,18 +11,51 @@ public class PE04_AcarretaAdrian {
     static Boolean living_room = false;
     static String r;
     static String h;
-    static Boolean menu = true;
+    static Boolean lightsMenu = true;
     static Boolean validRoom = false;
     static Boolean validOpt = false;
     static Scanner s = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { 
         do {
-            System.out.println("Lights control:\n");
+            System.out.println("Domotic house:\n");
+            System.out.println("  a. Control temperature");
+            System.out.println("  b. Control doors");
+            System.out.println("  c. Control laundry machine");
+            System.out.println("  d. Control lights");
+            System.out.println("  e. Exit");
+            r = s.next();
+            switch (r) {
+                case "a":
+                    
+                    break;
+                case "b":
+                    
+                    break;
+                case "c":
+                    
+                    break;
+                case "d":
+                    controlLights();
+                    break;
+                case "e":
+                    System.out.println("Closing menu...");
+                    break;
+            
+                default:
+                    break;
+            }
+            
+        } while (!r.equals("e"));
+        s.close();
+    }
+    public static void controlLights() { // Control·lar llums amb variables globals
+        do {
+            System.out.println("\nLights control:\n");
             System.out.println("  a. Control a room");
             System.out.println("  b. Control all the rooms");
             System.out.println("  c. Show the real state of the lights");
-            System.out.println("  d. Exit");
+            System.out.println("  d. Go back");
             r = s.next();
             switch (r) {
                 case "a":
@@ -67,14 +100,13 @@ public class PE04_AcarretaAdrian {
                     showRooms();
                     break;
                 case "d":
-                    menu = false;
+                    System.err.println("Closing menu...");
                     break;
             
                 default:
                     break;
             }
         } while (!r.equals("d"));
-        s.close();
     }
     public static void controlRoom(String h, String r) {
         switch (h) {
