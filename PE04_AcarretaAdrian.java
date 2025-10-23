@@ -34,7 +34,7 @@ public class PE04_AcarretaAdrian {
                     
                     break;
                 case "c":
-                    
+                    controlLaundryMachine();
                     break;
                 case "d":
                     controlLights();
@@ -51,7 +51,7 @@ public class PE04_AcarretaAdrian {
         s.close();
     }
     public static void controlLaundryMachine() { // Control·lar rentadora amb variables locals
-        
+        String program = null;
         do {
             System.out.println("\nLaundry machine control:\n");
             System.out.println("  a. Start a program");
@@ -61,20 +61,21 @@ public class PE04_AcarretaAdrian {
             }
             System.out.println("  d. Go back");
             r = s.next();
+            
             switch (r) {
                 case "a":
-                    Boolean validOpt=false;
                     Boolean validProgram=false;
                     if (machineState==true) {
                         System.out.println("Laundry machine is currently in a program.");
                     } else {
                         while (validProgram==false) {
                             System.out.println("Choose the program:");
-                            String program = s.next();
-                            if (program.equals("eco") || program.equals("turbo") || program.equals("regular")) {
+                            r = s.next();
+                            if (r.equals("eco") || r.equals("turbo") || r.equals("regular")) {
                                 validProgram = true;
-                                setProgram(program);
                                 machineState=true;
+                                program = r;
+                                System.out.printf("Laundry program set to: %s", program);
                             } else {
                                 System.out.println("\n(!) Invalid program.\n");
                                 System.err.println("Valid programs:");
@@ -82,22 +83,17 @@ public class PE04_AcarretaAdrian {
                             }
                         }
                     }
+                    
                     break;
                 case "b":
-                    validOpt=false;
-                    while (validOpt==false) {
-                        System.out.println("Manual - turn on or off: (on/off)");
-                        r = s.next();
-                        if (r.equals("on") || r.equals("off")) {
-                            validOpt=true;
-                            controlAllRooms(r);
-                        } else {
-                            System.out.println("\n(!) Invalid option.\n");
-                        }
-                    }
+                    System.out.printf("\nCurrent program is %s\n",program);
                     break;
                 case "c":
-                    showRooms();
+                    if (program != null) {
+                        program=null;
+                        machineState=false;
+                        System.out.println("Laundry program correctly canceled");
+                    }
                     break;
                 case "d":
                     System.err.println("Closing menu...");
@@ -133,7 +129,29 @@ public class PE04_AcarretaAdrian {
                                 r = s.next();
                                 if (r.equals("on") || r.equals("off")) {
                                     validOpt=true;
-                                    controlRoom(h,r);
+                                    switch (h) {
+                                        case "H1":
+                                            H1=controlRoom(h,H1,r);
+                                            break;
+                                        case "H2":
+                                            H2=controlRoom(h,H2,r);
+                                            break;
+                                        case "H3":
+                                            H3=controlRoom(h,H3,r);
+                                            break;
+                                        case "bathroom":
+                                            bathroom=controlRoom(h,bathroom,r);
+                                            break;
+                                        case "kitchen":
+                                            kitchen=controlRoom(h,kitchen,r);
+                                            break;
+                                        case "living_room":
+                                            living_room=controlRoom(h,living_room,r);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    
                                 } else {
                                     System.out.println("\n(!) Invalid option.\n");
                                 }
@@ -170,115 +188,23 @@ public class PE04_AcarretaAdrian {
             }
         } while (!r.equals("d"));
     }
-    public static void controlRoom(String h, String r) {
-        switch (h) {
-            case "H1":
-                if (r.equals("on")) {
-                    if (H1==true) {
-                        messageLightAlreadyOnOff(h,r);
-                    } else {
-                        H1 = true;
-                        messageLightOnOff(h,r);
-                    }
-                } else {
-                    if (H1==false) {
-                        messageLightAlreadyOnOff(h,r);
-                    } else {
-                        H1 = false;
-                        messageLightOnOff(h,r);
-                    }
-                }
-                break;
-            case "H2":
-                if (r.equals("on")) {
-                    if (H2==true) {
-                        messageLightAlreadyOnOff(h,r);
-                    } else {
-                        H2 = true;
-                        messageLightOnOff(h,r);
-                    }
-                } else {
-                    if (H2==false) {
-                        messageLightAlreadyOnOff(h,r);
-                    } else {
-                        H2 = false;
-                        messageLightOnOff(h,r);
-                    }
-                }
-                break;
-            case "H3":
-                if (r.equals("on")) {
-                    if (H3==true) {
-                        messageLightAlreadyOnOff(h,r);
-                    } else {
-                        H3 = true;
-                        messageLightOnOff(h,r);
-                    }
-                } else {
-                    if (H3==false) {
-                        messageLightAlreadyOnOff(h,r);
-                    } else {
-                        H3 = false;
-                        messageLightOnOff(h,r);
-                    }
-                }
-                break;
-            case "bathroom":
-                if (r.equals("on")) {
-                    if (bathroom==true) {
-                        messageLightAlreadyOnOff(h,r);
-                    } else {
-                        bathroom = true;
-                        messageLightOnOff(h,r);
-                    }
-                } else {
-                    if (bathroom==false) {
-                        messageLightAlreadyOnOff(h,r);
-                    } else {
-                        bathroom = false;
-                        messageLightOnOff(h,r);
-                    }
-                }
-                break;
-            case "kitchen":
-                if (r.equals("on")) {
-                    if (kitchen==true) {
-                        messageLightAlreadyOnOff(h,r);
-                    } else {
-                        kitchen = true;
-                        messageLightOnOff(h,r);
-                    }
-                } else {
-                    if (kitchen==false) {
-                        messageLightAlreadyOnOff(h,r);
-                    } else {
-                        kitchen = false;
-                        messageLightOnOff(h,r);
-                    }
-                }
-                break;
-            case "living_room":
-                if (r.equals("on")) {
-                    if (living_room==true) {
-                        messageLightAlreadyOnOff(h,r);
-                    } else {
-                        living_room = true;
-                        messageLightOnOff(h,r);
-                    }
-                } else {
-                    if (living_room==false) {
-                        messageLightAlreadyOnOff(h,r);
-                    } else {
-                        living_room = false;
-                        messageLightOnOff(h,r);
-                    }
-                }
-                break;
-        
-            default:
-
-                break;
+    public static boolean controlRoom(String h, Boolean currentState, String r) {
+        if (r.equals("on")) {
+            if (currentState) {
+                messageLightAlreadyOnOff(h, r);
+            } else {
+                currentState = true;
+                messageLightOnOff(h, r);
+            }
+        } else {
+            if (!currentState) {
+                messageLightAlreadyOnOff(h, r);
+            } else {
+                currentState = false;
+                messageLightOnOff(h, r);
+            }
         }
+        return currentState;
     }
     public static void controlAllRooms(String r) {
         if (r.equals("on")) {
