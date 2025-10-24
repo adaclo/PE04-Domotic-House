@@ -50,6 +50,7 @@ public class PE04_AcarretaAdrian {
         } while (!r.equals("e"));
         s.close();
     }
+    // PRIMERA PART DE L'ACTIVITAT SENSE BUCLES
     public static void controlLaundryMachine() { // Control·lar rentadora amb variables locals
         String program = null;
         do {
@@ -104,9 +105,7 @@ public class PE04_AcarretaAdrian {
             }
         } while (!r.equals("d"));
     }
-    public static void setProgram(String p) {
-        
-    }
+
     public static void controlLights() { // Control·lar llums amb variables globals
         do {
             System.out.println("\nLights control:\n");
