@@ -3,21 +3,26 @@ package Activitats.PE04;
 import java.util.Scanner;
 
 public class PE04_AcarretaAdrian {
-    static Boolean H1 = false;
-    static Boolean H2 = false;
-    static Boolean H3 = false;
-    static Boolean bathroom = false;
-    static Boolean kitchen = false;
-    static Boolean living_room = false;
-    static String r;
-    static String h;
-    static Boolean lightsMenu = true;
-    static Boolean validRoom = false;
-    static Boolean validOpt = false;
-    static Boolean machineState=false; // Aquesta variabe la necessito declarar global perquè quan obri el menu de la rentadora faré una comprovació
-    static Scanner s = new Scanner(System.in);
+    Boolean H1 = false;
+    Boolean H2 = false;
+    Boolean H3 = false;
+    Boolean bathroom = false;
+    Boolean kitchen = false;
+    Boolean living_room = false;
+    String r;
+    String h;
+    Boolean lightsMenu = true;
+    Boolean validRoom = false;
+    Boolean validOpt = false;
+    Boolean machineState=false; // Aquesta variabe la necessito declarar global perquè quan obri el menu de la rentadora faré una comprovació
+    Scanner s = new Scanner(System.in);
 
     public static void main(String[] args) { 
+    PE04_AcarretaAdrian p = new PE04_AcarretaAdrian();
+    p.principal();
+    }
+
+    public void principal() {
         do {
             System.out.println("Domotic house:\n");
             System.out.println("  a. Control temperature");
@@ -51,7 +56,7 @@ public class PE04_AcarretaAdrian {
         s.close();
     }
     // PRIMERA PART DE L'ACTIVITAT SENSE BUCLES
-    public static void controlLaundryMachine() { // Control·lar rentadora amb variables locals
+    public void controlLaundryMachine() { // Control·lar rentadora amb variables locals
         String program = null;
         do {
             System.out.println("\nLaundry machine control:\n");
@@ -106,7 +111,7 @@ public class PE04_AcarretaAdrian {
         } while (!r.equals("d"));
     }
 
-    public static void controlLights() { // Control·lar llums amb variables globals
+    public void controlLights() { // Control·lar llums amb variables globals
         do {
             System.out.println("\nLights control:\n");
             System.out.println("  a. Control a room");
@@ -187,7 +192,7 @@ public class PE04_AcarretaAdrian {
             }
         } while (!r.equals("d"));
     }
-    public static boolean controlRoom(String h, Boolean currentState, String r) {
+    public boolean controlRoom(String h, Boolean currentState, String r) {
         if (r.equals("on")) {
             if (currentState) {
                 messageLightAlreadyOnOff(h, r);
@@ -205,7 +210,7 @@ public class PE04_AcarretaAdrian {
         }
         return currentState;
     }
-    public static void controlAllRooms(String r) {
+    public void controlAllRooms(String r) {
         if (r.equals("on")) {
             H1=true;
             H2=true;
@@ -224,15 +229,15 @@ public class PE04_AcarretaAdrian {
             System.out.printf("All rooms successfully turned lights %s\n\n",r);
         }
     }
-    public static void messageLightOnOff(String h, String r) {
+    public void messageLightOnOff(String h, String r) {
         System.out.printf("Room - %s successfully turned %s\n\n",h,r);
     }
 
-    public static void messageLightAlreadyOnOff(String h, String r) {
+    public void messageLightAlreadyOnOff(String h, String r) {
         System.out.printf("Room - %s was already %s.\n\n",h,r);
     }
 
-    public static void showRooms() {
+    public void showRooms() {
         if (H1) {
             System.out.println("\nRoom - H1 - On");
         } else {
