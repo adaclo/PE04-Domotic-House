@@ -10,6 +10,8 @@ public class PE04_AcarretaAdrian {
     final String AMARILLO = "\u001B[33m";
     final String AZUL = "\u001B[34m";
 
+    String passwordDoors = null;
+    Boolean panicMode = false;
     Boolean H1 = false;
     Boolean H2 = false;
     Boolean H3 = false;
@@ -203,10 +205,43 @@ public class PE04_AcarretaAdrian {
         System.out.printf("Room - Living Room - %s\n\n", living_room ? VERDE + "On" + RESET : ROJO + "Off" + RESET);
     }
 
+    public void controlSpecificLight() {
+        validOpt = false;
+        validRoom = false;
+        while (!validRoom) {
+            System.out.print(AMARILLO + "Choose the room (H1/H2/H3/bathroom/kitchen/living_room): " + RESET);
+            h = s.next();
+            if (h.equalsIgnoreCase("H1") || h.equalsIgnoreCase("H2") || h.equalsIgnoreCase("H3")
+                    || h.equalsIgnoreCase("bathroom") || h.equalsIgnoreCase("kitchen")
+                    || h.equalsIgnoreCase("living_room")) {
+                validRoom = true;
+                while (!validOpt) {
+                    System.out.print(AMARILLO + "Manual - turn on or off (on/off): " + RESET);
+                    r = s.next();
+                    if (r.equalsIgnoreCase("on") || r.equalsIgnoreCase("off")) {
+                        validOpt = true;
+                        switch (h) {
+                            case "H1": H1 = controlRoom(h, H1, r); break;
+                            case "H2": H2 = controlRoom(h, H2, r); break;
+                            case "H3": H3 = controlRoom(h, H3, r); break;
+                            case "bathroom": bathroom = controlRoom(h, bathroom, r); break;
+                            case "kitchen": kitchen = controlRoom(h, kitchen, r); break;
+                            case "living_room": living_room = controlRoom(h, living_room, r); break;
+                            default: break;
+                        }
+                    } else {
+                        System.out.println(ROJO + "(!) Invalid option." + RESET);
+                    }
+                }
+            } else {
+                System.out.println(ROJO + "(!) Invalid room." + RESET);
+            }
+        }
+    }
+
     public void controlDoors() {
         s.nextLine();
-        Boolean panicMode = false;
-        String passwordDoors = null;
+        
         String resp = null;
 
         do {
@@ -214,13 +249,14 @@ public class PE04_AcarretaAdrian {
                 System.out.println(ROJO + "\n--- PANIC MODE ACTIVATED ---" + RESET);
                 System.out.print(AMARILLO + "Introduce the password to unlock it: " + RESET);
                 r = s.nextLine();
-                if (r.equalsIgnoreCase(passwordDoors)) {
+                if (r.equalsIgnoreCase(passwordDoors) && !r.equals(null)) {
                     panicMode = false;
                     System.out.println(VERDE + "\nPanic mode turned off correctly." + RESET);
                 } else {
                     System.out.println(ROJO + "\n(!) Incorrect password!" + RESET);
                 }
             } else {
+                
                 System.out.println(AZUL + "\nDoors control:\n" + RESET);
                 System.out.println("  a. Control a specific door");
                 System.out.println("  b. Control all the doors");
@@ -237,11 +273,35 @@ public class PE04_AcarretaAdrian {
                     case "b":
                         controlAllDoors();
                         break;
+                    case "c":
+                        showDoors();
+                        break;
+                    case "d":
+                        passwordDoors = turnPanicMode();
+                        break;
                     default:
                         break;
                 }
             }
         } while (!resp.equalsIgnoreCase("e"));
+    }
+
+    public void showDoors() {
+        System.out.println(AZUL + "\nDoors state:\n" + RESET);
+        System.out.printf("Door - main - %s\n", mainDoor + RESET);
+        System.out.printf("Door - kitchen - %s\n", kitchenDoor + RESET);
+        System.out.printf("Door - garage - %s\n", garageDoor + RESET);
+        System.out.printf("Room - backyard - %s\n", backyardDoor + RESET);
+    }
+
+    public String turnPanicMode() {
+        System.out.print(AMARILLO + "You're enabling panic mode, choose a password: ");
+        passwordDoors = s.next();
+        if (!passwordDoors.equals(null)) {
+            panicMode = true;
+            System.out.println(VERDE + "Panic Mode ENABLED");
+        }
+        return passwordDoors;
     }
 
     public void controlSpecificDoor() {
@@ -288,7 +348,7 @@ public class PE04_AcarretaAdrian {
     public String controlDoor(String door, String currentState, String r) {
         if (r.equalsIgnoreCase("open")) {
             if (currentState.equalsIgnoreCase("opened")) {
-                messageDoorAlreadyOnOff(door, r);
+                messageDoorAlreadyOnOff(door,currentState);
             } else if (currentState.equalsIgnoreCase("closed")) {
                 currentState = "opened";
                 messageDoorOpenClose(door, r);
@@ -297,7 +357,7 @@ public class PE04_AcarretaAdrian {
             }
         } else if (r.equalsIgnoreCase("close")) {
             if (currentState.equalsIgnoreCase("closed") || currentState.equalsIgnoreCase("locked")) {
-                messageDoorAlreadyOnOff(door, r);
+                messageDoorAlreadyOnOff(door,currentState);
             } else {
                 currentState = "closed";
                 messageDoorOpenClose(door, r);
@@ -306,10 +366,17 @@ public class PE04_AcarretaAdrian {
             if (currentState.equalsIgnoreCase("closed")) {
                 currentState = "locked";
                 messageDoorOpenClose(door, r);
-            } else if (r.equalsIgnoreCase("locked")) {
-                System.out.printf(ROJO + "Door %s is already %s.\n" + RESET, door, currentState);
-            } else
+            } else if (currentState.equalsIgnoreCase("locked")) {
+                messageDoorAlreadyOnOff(door,currentState);
+            } else {
                 System.out.printf(AMARILLO + "Door %s is %s, please close it before locking it.\n" + RESET, door, currentState);
+            }
+        } else if (r.equalsIgnoreCase("unlock")) {
+            if (currentState.equalsIgnoreCase("locked")) {
+                currentState = "closed";
+                messageDoorOpenClose(door, r);
+            } else {
+                System.out.printf(AMARILLO + "Door %s isn't locked.\n" + RESET,door);
             }
         }
         return currentState;
@@ -357,37 +424,5 @@ public class PE04_AcarretaAdrian {
         System.out.printf(AMARILLO + "Door - %s was already %s.\n\n" + RESET, door, r);
     }
 
-    public void controlSpecificLight() {
-        validOpt = false;
-        validRoom = false;
-        while (!validRoom) {
-            System.out.print(AMARILLO + "Choose the room (H1/H2/H3/bathroom/kitchen/living_room): " + RESET);
-            h = s.next();
-            if (h.equalsIgnoreCase("H1") || h.equalsIgnoreCase("H2") || h.equalsIgnoreCase("H3")
-                    || h.equalsIgnoreCase("bathroom") || h.equalsIgnoreCase("kitchen")
-                    || h.equalsIgnoreCase("living_room")) {
-                validRoom = true;
-                while (!validOpt) {
-                    System.out.print(AMARILLO + "Manual - turn on or off (on/off): " + RESET);
-                    r = s.next();
-                    if (r.equalsIgnoreCase("on") || r.equalsIgnoreCase("off")) {
-                        validOpt = true;
-                        switch (h) {
-                            case "H1": H1 = controlRoom(h, H1, r); break;
-                            case "H2": H2 = controlRoom(h, H2, r); break;
-                            case "H3": H3 = controlRoom(h, H3, r); break;
-                            case "bathroom": bathroom = controlRoom(h, bathroom, r); break;
-                            case "kitchen": kitchen = controlRoom(h, kitchen, r); break;
-                            case "living_room": living_room = controlRoom(h, living_room, r); break;
-                            default: break;
-                        }
-                    } else {
-                        System.out.println(ROJO + "(!) Invalid option." + RESET);
-                    }
-                }
-            } else {
-                System.out.println(ROJO + "(!) Invalid room." + RESET);
-            }
-        }
-    }
+    
 }
