@@ -1,5 +1,6 @@
 package Activitats.PE04;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class PE04_AcarretaAdrian {
@@ -10,6 +11,7 @@ public class PE04_AcarretaAdrian {
     final String AMARILLO = "\u001B[33m";
     final String AZUL = "\u001B[34m";
 
+    Boolean scheduleDoors = false;
     String passwordDoors = null;
     Boolean panicMode = false;
     Boolean H1 = false;
@@ -197,12 +199,36 @@ public class PE04_AcarretaAdrian {
 
     public void showRooms() {
         System.out.println(AZUL + "\nLights state:\n" + RESET);
-        System.out.printf("Room - H1 - %s\n", H1 ? VERDE + "On" + RESET : ROJO + "Off" + RESET);
-        System.out.printf("Room - H2 - %s\n", H2 ? VERDE + "On" + RESET : ROJO + "Off" + RESET);
-        System.out.printf("Room - H3 - %s\n", H3 ? VERDE + "On" + RESET : ROJO + "Off" + RESET);
-        System.out.printf("Room - Bathroom - %s\n", bathroom ? VERDE + "On" + RESET : ROJO + "Off" + RESET);
-        System.out.printf("Room - Kitchen - %s\n", kitchen ? VERDE + "On" + RESET : ROJO + "Off" + RESET);
-        System.out.printf("Room - Living Room - %s\n\n", living_room ? VERDE + "On" + RESET : ROJO + "Off" + RESET);
+        if (H1) {
+            System.out.println("Room - H1 - " + VERDE + "On" + RESET);
+        } else {
+            System.out.println("Room - H1 - " + ROJO + "Off" + RESET);
+        }
+        if (H2) {
+            System.out.println("Room - H2 - " + VERDE + "On" + RESET);
+        } else {
+            System.out.println("Room - H2 - " + ROJO + "Off" + RESET);
+        }
+        if (H3) {
+            System.out.println("Room - H3 - " + VERDE + "On" + RESET);
+        } else {
+            System.out.println("Room - H3 - " + ROJO + "Off" + RESET);
+        }
+        if (bathroom) {
+            System.out.println("Room - Bathroom - " + VERDE + "On" + RESET);
+        } else {
+            System.out.println("Room - Bathroom - " + ROJO + "Off" + RESET);
+        }
+        if (kitchen) {
+            System.out.println("Room - Kitchen - " + VERDE + "On" + RESET);
+        } else {
+            System.out.println("Room - Kitchen - " + ROJO + "Off" + RESET);
+        }
+        if (living_room) {
+            System.out.println("Room - Living Room - " + VERDE + "On\n" + RESET);
+        } else {
+            System.out.println("Room - Living Room - " + ROJO + "Off\n" + RESET);
+        }
     }
 
     public void controlSpecificLight() {
@@ -262,16 +288,17 @@ public class PE04_AcarretaAdrian {
                 System.out.println("  b. Control all the doors");
                 System.out.println("  c. Check all doors status");
                 System.out.println("  d. Turn on PANIC MODE");
-                System.out.println("  e. Go back");
+                System.out.println("  e. Schedule doors");
+                System.out.println("  f. Go back");
                 System.out.print(AMARILLO + "Choose: " + RESET);
                 resp = s.next();
-
+                scheduleDoors = false;
                 switch (resp) {
                     case "a":
-                        controlSpecificDoor();
+                        controlSpecificDoor(scheduleDoors);
                         break;
                     case "b":
-                        controlAllDoors();
+                        controlAllDoors(scheduleDoors);
                         break;
                     case "c":
                         showDoors();
@@ -279,11 +306,33 @@ public class PE04_AcarretaAdrian {
                     case "d":
                         passwordDoors = turnPanicMode();
                         break;
+                    case "e":
+                        scheduleDoors();
+                        break;
                     default:
                         break;
                 }
             }
-        } while (!resp.equalsIgnoreCase("e"));
+        } while (!resp.equalsIgnoreCase("f"));
+    }
+
+    public void scheduleDoors() {
+        System.out.print(AZUL + "\nSchedule doors:\n" + RESET);
+        System.out.println("  a. Schedule a specific door");
+        System.out.println("  b. Schedule all the doors");
+        r = s.next();
+        scheduleDoors = true;
+        switch (r) {
+            case "a":
+                controlSpecificDoor(scheduleDoors);
+                break;
+            case "b":
+                controlAllDoors(scheduleDoors);
+                break;
+        
+            default:
+                break;
+        }
     }
 
     public void showDoors() {
@@ -304,7 +353,54 @@ public class PE04_AcarretaAdrian {
         return passwordDoors;
     }
 
-    public void controlSpecificDoor() {
+    public String scheduleSpecificDoor(String door, String currentState, String r) {
+        int startHour,startMinute,startSecond,endHour,endMinute,endSecond;
+        String oldState=currentState;
+        try {
+            System.out.printf(AZUL + "Start time of %s to turn %s\n",door,r);
+            System.out.print(AMARILLO + "Choose an hour: " + RESET);
+            startHour=s.nextInt();
+            System.out.print(AMARILLO + "Choose a minute: " + RESET);
+            startMinute=s.nextInt();
+            System.out.print(AMARILLO + "Choose a second: " + RESET);
+            startSecond=s.nextInt();
+
+            System.out.printf(AZUL + "End time of %s being %s\n",door,r);
+            System.out.print(AMARILLO + "Choose an hour: " + RESET);
+            endHour=s.nextInt();
+            System.out.print(AMARILLO + "Choose a minute: " + RESET);
+            endMinute=s.nextInt();
+            System.out.print(AMARILLO + "Choose a second: " + RESET);
+            endSecond=s.nextInt();
+
+                for (int hourCount=0;hourCount<24;hourCount++) {
+                    for (int minuteCount=0;minuteCount<60;minuteCount++) {
+                        for (int secondCount=0;secondCount<60;secondCount++) {
+                            if (hourCount==startHour && minuteCount==startMinute && secondCount==startSecond) {
+                                System.out.printf(VERDE + "\nCurrent time is %d:%d:%d\n",hourCount,minuteCount,secondCount);
+                                currentState = controlDoor(door, currentState, r);
+                            }
+                            if (hourCount==endHour && minuteCount==endMinute && secondCount==endSecond) {
+                                System.out.printf(ROJO + "\nCurrent time is %d:%d:%d\n",hourCount,minuteCount,secondCount);
+                                controlDoor(door, oldState, oldState);
+                            }
+                        }
+                    
+                }
+            }
+
+        } catch (InputMismatchException e){
+            System.out.println(ROJO + "(!) Invalid format, please enter an integer");
+        }
+        return currentState;
+    }
+
+    public String scheduleAllDoors(String door, String currentState, String r) {
+
+        return currentState;
+    }
+
+    public void controlSpecificDoor(boolean scheduleDoors) {
         Boolean validOpt = false;
         Boolean validDoor = false;
         while (!validDoor) {
@@ -321,16 +417,32 @@ public class PE04_AcarretaAdrian {
                         validOpt = true;
                         switch (door) {
                             case "main":
-                                mainDoor = controlDoor(door, mainDoor, r);
+                                if (!scheduleDoors) {
+                                    mainDoor = controlDoor(door, mainDoor, r);
+                                } else {
+                                    mainDoor = scheduleSpecificDoor(door,mainDoor,r);
+                                }
                                 break;
                             case "kitchen":
-                                kitchenDoor = controlDoor(door, kitchenDoor, r);
+                                if (!scheduleDoors) {
+                                    kitchenDoor = controlDoor(door, kitchenDoor, r);
+                                } else {
+                                    kitchenDoor = scheduleSpecificDoor(door,kitchenDoor,r);
+                                }
                                 break;
                             case "garage":
-                                garageDoor = controlDoor(door, garageDoor, r);
+                                if (!scheduleDoors) {
+                                    garageDoor = controlDoor(door, garageDoor, r);
+                                } else {
+                                    garageDoor = scheduleSpecificDoor(door,garageDoor,r);
+                                }
                                 break;
                             case "backyard":
-                                backyardDoor = controlDoor(door, backyardDoor, r);
+                                if (!scheduleDoors) {
+                                    backyardDoor = controlDoor(door, backyardDoor, r);
+                                } else {
+                                    backyardDoor = scheduleSpecificDoor(door,backyardDoor,r);
+                                }
                                 break;
                             default:
                                 break;
@@ -382,20 +494,40 @@ public class PE04_AcarretaAdrian {
         return currentState;
     }
 
-    public void controlAllDoors() {
-        System.out.print(AMARILLO + "Manual - change state (open/close/lock/unlock): " + RESET);
+    public void controlAllDoors(boolean scheduleDoors) {
+        System.out.print("Manual - change state of doors: (open/close/lock/unlock) ");
         Boolean validOpt = false;
         do {
             r = s.next();
             if (r.equalsIgnoreCase("open") || r.equalsIgnoreCase("close")
                     || r.equalsIgnoreCase("lock") || r.equalsIgnoreCase("unlock")) {
                 validOpt = true;
-                mainDoor = kitchenDoor = garageDoor = backyardDoor =
-                        (r.equalsIgnoreCase("open")) ? "opened" :
-                        (r.equalsIgnoreCase("lock")) ? "locked" : "closed";
-                System.out.printf(VERDE + "All doors successfully turned %s\n\n" + RESET, r);
-            } else {
-                System.out.println(ROJO + "(!) Invalid option." + RESET);
+
+                if (r.equalsIgnoreCase("open")) {
+                    mainDoor = "opened";
+                    kitchenDoor = "opened";
+                    backyardDoor = "opened";
+                    garageDoor = "opened";
+                    System.out.printf("All doors successfully turned %s\n\n", r);
+
+                } else if (r.equalsIgnoreCase("close") || r.equalsIgnoreCase("unlock")) {
+                    mainDoor = "closed";
+                    kitchenDoor = "closed";
+                    backyardDoor = "closed";
+                    garageDoor = "closed";
+                    System.out.printf("All doors successfully turned %s\n\n", r);
+
+                } else if (r.equalsIgnoreCase("lock")) {
+                    mainDoor = "locked";
+                    kitchenDoor = "locked";
+                    backyardDoor = "locked";
+                    garageDoor = "locked";
+                    System.out.printf("All doors successfully turned %s\n\n", r);
+
+                } else {
+                    System.out.println("(!) Invalid option.");
+                }
+
             }
         } while (!validOpt);
     }
