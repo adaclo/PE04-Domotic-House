@@ -381,12 +381,27 @@ public class PE04_AcarretaAdrian {
             validOpt=false;
 
             System.out.printf(AZUL + "End time of %s being %s\n",door,r);
-            System.out.print(AMARILLO + "Choose an hour: " + RESET);
-            endHour=s.nextInt();
-            System.out.print(AMARILLO + "Choose a minute: " + RESET);
-            endMinute=s.nextInt();
-            System.out.print(AMARILLO + "Choose a second: " + RESET);
-            endSecond=s.nextInt();
+            do {
+                System.out.print(AMARILLO + "Choose an hour: " + RESET);
+                endHour=s.nextInt();
+                if (endHour>=0 && endHour <24)
+                    validOpt=true;
+            } while (!validOpt);
+            validOpt=false;
+            do {
+                System.out.print(AMARILLO + "Choose a minute: " + RESET);
+                endMinute=s.nextInt();
+                if (endMinute>=0 && endMinute <60)
+                    validOpt=true;
+            } while (!validOpt);
+            validOpt=false;
+            do {
+                System.out.print(AMARILLO + "Choose a second: " + RESET);
+                endSecond=s.nextInt();
+                if (endSecond>=0 && endSecond <60)
+                    validOpt=true;
+            } while (!validOpt);
+            validOpt=false;
 
             for (int day=0;day<=1;day++) {
                 for (int hourCount=0;hourCount<24;hourCount++) {
@@ -409,21 +424,19 @@ public class PE04_AcarretaAdrian {
                                 if (day==1) {
                                     if (hourCount==endHour && minuteCount==endMinute && secondCount==endSecond) {
                                         System.out.printf(ROJO + "\nCurrent time is %d:%d:%d\n",hourCount,minuteCount,secondCount);
-                                        System.err.println(currentState+oldState);
-                                        controlDoor(door, currentState, oldState);
+                                        currentState = controlDoor(door, currentState, oldState);
                                     }
                                 }
                             } else {
                                 if (hourCount==endHour && minuteCount==endMinute && secondCount==endSecond) {
                                     System.out.printf(ROJO + "\nCurrent time is %d:%d:%d\n",hourCount,minuteCount,secondCount);
-                                    controlDoor(door, currentState, oldState);
+                                    currentState = controlDoor(door, currentState, oldState);
                                 }
                             }
                         }
                     }
                 }
             }
-
         } catch (InputMismatchException e){
             System.out.println(ROJO + "(!) Invalid format, please enter an integer");
         }
