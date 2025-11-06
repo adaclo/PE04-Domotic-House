@@ -144,6 +144,10 @@ public class PE04_AcarretaAdrian {
                         }
                     } catch (InputMismatchException e) {
                         System.out.println(ROJO + "(!) Invalid format, please enter an integer");
+                    } catch (NumberFormatException e) {
+                        System.out.println(ROJO + "(!) Invalid format, please enter an integer");
+                    } catch (Exception e) {
+                        System.out.println(ROJO + "(!) Unknown error");
                     }
                     break;
                 case "b":
@@ -184,6 +188,10 @@ public class PE04_AcarretaAdrian {
                         }
                     } catch (InputMismatchException e) {
                         System.out.println(ROJO + "(!) Invalid format, please enter an integer");
+                    } catch (NumberFormatException e) {
+                        System.out.println(ROJO + "(!) Invalid format, please enter an integer");
+                    } catch (Exception e) {
+                        System.out.println(ROJO + "(!) Unknown error");
                     }
                     break;
                 case "b":
