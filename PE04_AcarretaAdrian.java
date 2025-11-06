@@ -20,6 +20,12 @@ public class PE04_AcarretaAdrian {
     Boolean bathroom = false;
     Boolean kitchen = false;
     Boolean living_room = false;
+    int tempH1 = 18;
+    int tempH2 = 18;
+    int tempH3 = 18;
+    int tempBathroom = 18;
+    int tempKitchen = 18;
+    int tempLivingRoom = 18;
     String r;
     String h;
     Boolean lightsMenu = true;
@@ -72,6 +78,171 @@ public class PE04_AcarretaAdrian {
             }
 
         } while (!r.equalsIgnoreCase("e"));
+    }
+
+    public void controlTemperature() {
+        do {
+            System.out.println(AZUL + "\nTemperature control:\n" + RESET);
+            System.out.println("  a. Control a room");
+            System.out.println("  b. Control all the rooms");
+            System.out.println("  c. Show current temperature");
+            System.out.println("  d. Go back");
+            System.out.print(AMARILLO + "Choose: " + RESET);
+            r = s.next();
+            switch (r) {
+                case "a":
+                    validRoom = false;
+                    while (!validRoom) {
+                        System.out.print(AMARILLO + "Choose the room (H1/H2/H3/bathroom/kitchen/living_room): " + RESET);
+                        String room = s.next();
+                        if (room.equalsIgnoreCase("H1") || room.equalsIgnoreCase("H2") || room.equalsIgnoreCase("H3")
+                                || room.equalsIgnoreCase("bathroom") || room.equalsIgnoreCase("kitchen")
+                                || room.equalsIgnoreCase("living_room")) {
+                            validRoom = true;
+                            changeTemperatureRoom(room);
+                        } else {
+                            System.out.println(ROJO + "(!) Invalid room." + RESET);
+                        }
+                    }
+                    break;
+                case "b":
+                    //changeTemperatureAllRooms();
+                    break;
+                case "c":
+                    //showTemperatureRooms();
+                    break;
+                default:
+                    System.out.println(ROJO + "(!) Invalid option." + RESET);
+                    break;
+            }
+        } while (r.equals("d"));
+    }
+
+    public void changeTemperatureRoom(String room) {
+        do {
+            System.out.println(AZUL + "\nChange temperature specific room:\n" + RESET);
+            System.out.println("  a. Choose manual temp");
+            System.out.println("  b. Increase temp (+1)");
+            System.out.println("  c. Decrease temp (-1)");
+            System.out.println("  d. Go back");
+            System.out.print(AMARILLO + "Choose: " + RESET);
+            r = s.next();
+            switch (r) {
+                case "a":
+                    try {
+                        Boolean validTemp=false;
+                        while (!validTemp) {
+                            System.out.print(AMARILLO + "Choose temperature: " + RESET);
+                            r = s.next();
+                            if (Integer.parseInt(r)<0 || Integer.parseInt(r)>35) {
+                                System.out.println(ROJO+"Please enter a number between 0 and 35.");
+                            } else {
+                                validTemp=true;
+                                int temperature = Integer.parseInt(r);
+                                setTemperature(room,temperature);
+                            }
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println(ROJO + "(!) Invalid format, please enter an integer");
+                    }
+                    break;
+                case "b":
+                    increaseTemp(room);
+                    break;
+                case "c":
+                    decreaseTemp(room);
+                    break;
+                default:
+                    break;
+            }
+        } while (r.equals("d"));
+        
+    }
+
+    public void showTemperatureRooms() {
+
+    }
+
+    public void increaseTemp(String room) {
+       if (room.equalsIgnoreCase("h1")) {
+            System.out.println("Temperature increased from " + AMARILLO + tempH1 + RESET + " to " + VERDE + tempH1++ + RESET);
+            tempH1++;
+        } else if (room.equalsIgnoreCase("h2")) {
+            System.out.println("Temperature increased from " + AMARILLO + tempH2 + RESET + " to " + VERDE + tempH2++ + RESET);
+            tempH2++;
+        } else if (room.equalsIgnoreCase("h3")) {
+            System.out.println("Temperature increased from " + AMARILLO + tempH3 + RESET + " to " + VERDE + tempH3++ + RESET);
+            tempH3++;
+        } else if (room.equalsIgnoreCase("bathroom")) {
+            System.out.println("Temperature increased from " + AMARILLO + tempBathroom + RESET + " to " + VERDE + tempBathroom++ + RESET);
+            tempBathroom++;
+        } else if (room.equalsIgnoreCase("kitchen")) {
+            System.out.println("Temperature increased from " + AMARILLO + tempKitchen + RESET + " to " + VERDE + tempKitchen++ + RESET);
+            tempKitchen++;
+        } else if (room.equalsIgnoreCase("living_room")) {
+            System.out.println("Temperature increased from " + AMARILLO + tempLivingRoom + RESET + " to " + VERDE + tempLivingRoom++ + RESET);
+            tempLivingRoom++;
+        } 
+    }
+
+    public void decreaseTemp(String room) {
+       if (room.equalsIgnoreCase("h1")) {
+            System.out.println("Temperature decreased from " + AMARILLO + tempH1 + RESET + " to " + VERDE + tempH1-- + RESET);
+            tempH1--;
+        } else if (room.equalsIgnoreCase("h2")) {
+            System.out.println("Temperature decreased from " + AMARILLO + tempH2 + RESET + " to " + VERDE + tempH2-- + RESET);
+            tempH2--;
+        } else if (room.equalsIgnoreCase("h3")) {
+            System.out.println("Temperature decreased from " + AMARILLO + tempH3 + RESET + " to " + VERDE + tempH3-- + RESET);
+            tempH3--;
+        } else if (room.equalsIgnoreCase("bathroom")) {
+            System.out.println("Temperature decreased from " + AMARILLO + tempBathroom + RESET + " to " + VERDE + tempBathroom-- + RESET);
+            tempBathroom--;
+        } else if (room.equalsIgnoreCase("kitchen")) {
+            System.out.println("Temperature decreased from " + AMARILLO + tempKitchen + RESET + " to " + VERDE + tempKitchen-- + RESET);
+            tempKitchen--;
+        } else if (room.equalsIgnoreCase("living_room")) {
+            System.out.println("Temperature decreased from " + AMARILLO + tempLivingRoom + RESET + " to " + VERDE + tempLivingRoom-- + RESET);
+            tempLivingRoom--;
+        } 
+    }
+
+    public void setTemperature(String room, int temperatureLimit) {
+        if (room.equalsIgnoreCase("h1")) {
+            tempH1 = temperatureLoop(temperatureLimit,tempH1);
+        } else if (room.equalsIgnoreCase("h2")) {
+            tempH2 = temperatureLoop(temperatureLimit,tempH2);
+        } else if (room.equalsIgnoreCase("h3")) {
+            tempH3 = temperatureLoop(temperatureLimit,tempH3);
+        } else if (room.equalsIgnoreCase("bathroom")) {
+            tempBathroom = temperatureLoop(temperatureLimit,tempBathroom);
+        } else if (room.equalsIgnoreCase("kitchen")) {
+            tempKitchen = temperatureLoop(temperatureLimit,tempKitchen);
+        } else if (room.equalsIgnoreCase("living_room")) {
+            tempLivingRoom = temperatureLoop(temperatureLimit,tempLivingRoom);
+        }
+    }
+
+    public int temperatureLoop(int temperatureLimit, int currentTemp) {
+        int finalTemp=0;
+        if (temperatureLimit>currentTemp) {
+            for (int temp=currentTemp;temp<=temperatureLimit;temp++) {
+                System.out.println("Temperature is " + AMARILLO + temp + RESET);
+                if (temp==temperatureLimit) {
+                    finalTemp = temp;
+                    System.out.println(VERDE + "Temperature has been set to " + RESET + finalTemp);
+                }
+            }
+        } else if (temperatureLimit<currentTemp) {
+            for (int temp=currentTemp;temp>=temperatureLimit;temp--) {
+                System.out.println("Temperature is " + AMARILLO + temp + RESET);
+                if (temp==temperatureLimit) {
+                    finalTemp = temp;
+                    System.out.println(VERDE + "Temperature has been set to " + RESET + finalTemp);
+                }
+            }
+        }
+        return finalTemp;
     }
 
     public void controlLaundryMachine() {
@@ -248,13 +419,26 @@ public class PE04_AcarretaAdrian {
                     if (r.equalsIgnoreCase("on") || r.equalsIgnoreCase("off")) {
                         validOpt = true;
                         switch (h) {
-                            case "H1": H1 = controlRoom(h, H1, r); break;
-                            case "H2": H2 = controlRoom(h, H2, r); break;
-                            case "H3": H3 = controlRoom(h, H3, r); break;
-                            case "bathroom": bathroom = controlRoom(h, bathroom, r); break;
-                            case "kitchen": kitchen = controlRoom(h, kitchen, r); break;
-                            case "living_room": living_room = controlRoom(h, living_room, r); break;
-                            default: break;
+                            case "H1":
+                                H1 = controlRoom(h, H1, r);
+                                break;
+                            case "H2":
+                                H2 = controlRoom(h, H2, r);
+                                break;
+                            case "H3":  
+                                H3 = controlRoom(h, H3, r);
+                                break;
+                            case "bathroom":
+                                bathroom = controlRoom(h, bathroom, r);
+                                break;
+                            case "kitchen":
+                                kitchen = controlRoom(h, kitchen, r);
+                                break;
+                            case "living_room":
+                                living_room = controlRoom(h, living_room, r);
+                                break;
+                            default:
+                                break;
                         }
                     } else {
                         System.out.println(ROJO + "(!) Invalid option." + RESET);
