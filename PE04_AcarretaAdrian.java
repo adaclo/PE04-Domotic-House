@@ -106,10 +106,10 @@ public class PE04_AcarretaAdrian {
                     }
                     break;
                 case "b":
-                    //changeTemperatureAllRooms();
+                    changeTemperatureAllRooms();
                     break;
                 case "c":
-                    //showTemperatureRooms();
+                    showTemperatureRooms();
                     break;
                 default:
                     System.out.println(ROJO + "(!) Invalid option." + RESET);
@@ -147,10 +147,60 @@ public class PE04_AcarretaAdrian {
                     }
                     break;
                 case "b":
-                    increaseTemp(room);
+                    increaseTempSpecificRoom(room);
                     break;
                 case "c":
-                    decreaseTemp(room);
+                    decreaseTempSpecificRoom(room);
+                    break;
+                default:
+                    break;
+            }
+        } while (r.equals("d"));
+        
+    }
+    public void changeTemperatureAllRooms() {
+        do {
+            System.out.println(AZUL + "\nChange temperature all rooms:\n" + RESET);
+            System.out.println("  a. Choose manual temp");
+            System.out.println("  b. Increase temp (+1)");
+            System.out.println("  c. Decrease temp (-1)");
+            System.out.println("  d. Go back");
+            System.out.print(AMARILLO + "Choose: " + RESET);
+            r = s.next();
+            switch (r) {
+                case "a":
+                    try {
+                        Boolean validTemp=false;
+                        while (!validTemp) {
+                            System.out.print(AMARILLO + "Choose temperature: " + RESET);
+                            r = s.next();
+                            if (Integer.parseInt(r)<0 || Integer.parseInt(r)>35) {
+                                System.out.println(ROJO+"Please enter a number between 0 and 35.");
+                            } else {
+                                validTemp=true;
+                                int temperature = Integer.parseInt(r);
+                                setTemperatureAllRooms(temperature);
+                            }
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println(ROJO + "(!) Invalid format, please enter an integer");
+                    }
+                    break;
+                case "b":
+                    tempH1 = increaseTemp(tempH1);
+                    tempH2 = increaseTemp(tempH2);
+                    tempH3 = increaseTemp(tempH3);
+                    tempBathroom = increaseTemp(tempBathroom);
+                    tempKitchen = increaseTemp(tempKitchen);
+                    tempLivingRoom = increaseTemp(tempLivingRoom);
+                    break;
+                case "c":
+                    tempH1 = decreaseTemp(tempH1);
+                    tempH2 = decreaseTemp(tempH2);
+                    tempH3 = decreaseTemp(tempH3);
+                    tempBathroom = decreaseTemp(tempBathroom);
+                    tempKitchen = decreaseTemp(tempKitchen);
+                    tempLivingRoom = decreaseTemp(tempLivingRoom);
                     break;
                 default:
                     break;
@@ -159,51 +209,70 @@ public class PE04_AcarretaAdrian {
         
     }
 
-    public void showTemperatureRooms() {
-
+    public void setTemperatureAllRooms(int temp) {
+        temperatureLoop(temp, tempH1);
+        temperatureLoop(temp, tempH2);
+        temperatureLoop(temp, tempH3);
+        temperatureLoop(temp, tempBathroom);
+        temperatureLoop(temp, tempKitchen);
+        temperatureLoop(temp, tempLivingRoom);
     }
 
-    public void increaseTemp(String room) {
+
+
+    public void showTemperatureRooms() {
+        System.out.println("Temperature of " + AMARILLO + "H1" + RESET + " is: " + AMARILLO + tempH1 + RESET);
+        System.out.println("Temperature of " + AMARILLO + "H2" + RESET + " is: " + AMARILLO + tempH2 + RESET);
+        System.out.println("Temperature of " + AMARILLO + "H3" + RESET + " is: " + AMARILLO + tempH3 + RESET);
+        System.out.println("Temperature of " + AMARILLO + "Bathroom" + RESET + " is: " + AMARILLO + tempBathroom + RESET);
+        System.out.println("Temperature of " + AMARILLO + "Kitchen" + RESET + " is: " + AMARILLO + tempKitchen + RESET);
+        System.out.println("Temperature of " + AMARILLO + "Living Room" + RESET + " is: " + AMARILLO + tempLivingRoom + RESET);
+    }
+
+    public void increaseTempSpecificRoom(String room) {
        if (room.equalsIgnoreCase("h1")) {
-            System.out.println("Temperature increased from " + AMARILLO + tempH1 + RESET + " to " + VERDE + tempH1++ + RESET);
-            tempH1++;
+            tempH1 = increaseTemp(tempH1);
         } else if (room.equalsIgnoreCase("h2")) {
-            System.out.println("Temperature increased from " + AMARILLO + tempH2 + RESET + " to " + VERDE + tempH2++ + RESET);
-            tempH2++;
+            tempH2 = increaseTemp(tempH2);
         } else if (room.equalsIgnoreCase("h3")) {
-            System.out.println("Temperature increased from " + AMARILLO + tempH3 + RESET + " to " + VERDE + tempH3++ + RESET);
-            tempH3++;
+            tempH3 = increaseTemp(tempH3);
         } else if (room.equalsIgnoreCase("bathroom")) {
-            System.out.println("Temperature increased from " + AMARILLO + tempBathroom + RESET + " to " + VERDE + tempBathroom++ + RESET);
-            tempBathroom++;
+            tempBathroom = increaseTemp(tempBathroom);
         } else if (room.equalsIgnoreCase("kitchen")) {
-            System.out.println("Temperature increased from " + AMARILLO + tempKitchen + RESET + " to " + VERDE + tempKitchen++ + RESET);
-            tempKitchen++;
+            tempKitchen = increaseTemp(tempKitchen);
         } else if (room.equalsIgnoreCase("living_room")) {
-            System.out.println("Temperature increased from " + AMARILLO + tempLivingRoom + RESET + " to " + VERDE + tempLivingRoom++ + RESET);
-            tempLivingRoom++;
+            tempLivingRoom = increaseTemp(tempLivingRoom);
         } 
     }
 
-    public void decreaseTemp(String room) {
+    public int increaseTemp(int temp) {
+        int oldTemp = temp;
+        temp++;
+        System.out.println("Temperature increased from " + AMARILLO + oldTemp + RESET + " to " + VERDE + temp + RESET);
+        return temp;
+    }
+
+    public int decreaseTemp(int temp) {
+        int oldTemp = temp;
+        temp--;
+        System.out.println("Temperature decreased from " + AMARILLO + oldTemp + RESET + " to " + VERDE + temp + RESET);
+        
+        return temp;
+    }
+
+    public void decreaseTempSpecificRoom(String room) {
        if (room.equalsIgnoreCase("h1")) {
-            System.out.println("Temperature decreased from " + AMARILLO + tempH1 + RESET + " to " + VERDE + tempH1-- + RESET);
-            tempH1--;
+            tempH1 = decreaseTemp(tempH1);
         } else if (room.equalsIgnoreCase("h2")) {
-            System.out.println("Temperature decreased from " + AMARILLO + tempH2 + RESET + " to " + VERDE + tempH2-- + RESET);
-            tempH2--;
+            tempH2 = decreaseTemp(tempH2);
         } else if (room.equalsIgnoreCase("h3")) {
-            System.out.println("Temperature decreased from " + AMARILLO + tempH3 + RESET + " to " + VERDE + tempH3-- + RESET);
-            tempH3--;
+            tempH3 = decreaseTemp(tempH3);
         } else if (room.equalsIgnoreCase("bathroom")) {
-            System.out.println("Temperature decreased from " + AMARILLO + tempBathroom + RESET + " to " + VERDE + tempBathroom-- + RESET);
-            tempBathroom--;
+            tempBathroom = decreaseTemp(tempBathroom);
         } else if (room.equalsIgnoreCase("kitchen")) {
-            System.out.println("Temperature decreased from " + AMARILLO + tempKitchen + RESET + " to " + VERDE + tempKitchen-- + RESET);
-            tempKitchen--;
+            tempKitchen = decreaseTemp(tempKitchen);
         } else if (room.equalsIgnoreCase("living_room")) {
-            System.out.println("Temperature decreased from " + AMARILLO + tempLivingRoom + RESET + " to " + VERDE + tempLivingRoom-- + RESET);
-            tempLivingRoom--;
+            tempLivingRoom = decreaseTemp(tempLivingRoom);
         } 
     }
 
