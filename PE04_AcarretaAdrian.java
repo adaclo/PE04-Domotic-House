@@ -52,6 +52,7 @@ public class PE04_AcarretaAdrian {
 
             switch (r) {
                 case "a":
+                    controlTemperature();
                     break;
                 case "b":
                     controlDoors();
@@ -288,7 +289,7 @@ public class PE04_AcarretaAdrian {
                 System.out.println("  b. Control all the doors");
                 System.out.println("  c. Check all doors status");
                 System.out.println("  d. Turn on PANIC MODE");
-                System.out.println("  e. Schedule doors");
+                System.out.println("  e. Schedule specific door");
                 System.out.println("  f. Go back");
                 System.out.print(AMARILLO + "Choose: " + RESET);
                 resp = s.next();
@@ -298,7 +299,7 @@ public class PE04_AcarretaAdrian {
                         controlSpecificDoor(scheduleDoors);
                         break;
                     case "b":
-                        controlAllDoors(scheduleDoors);
+                        controlAllDoors();
                         break;
                     case "c":
                         showDoors();
@@ -307,32 +308,14 @@ public class PE04_AcarretaAdrian {
                         passwordDoors = turnPanicMode();
                         break;
                     case "e":
-                        scheduleDoors();
+                        scheduleDoors = true;
+                        controlSpecificDoor(scheduleDoors);
                         break;
                     default:
                         break;
                 }
             }
         } while (!resp.equalsIgnoreCase("f"));
-    }
-
-    public void scheduleDoors() {
-        System.out.print(AZUL + "\nSchedule doors:\n" + RESET);
-        System.out.println("  a. Schedule a specific door");
-        System.out.println("  b. Schedule all the doors");
-        r = s.next();
-        scheduleDoors = true;
-        switch (r) {
-            case "a":
-                controlSpecificDoor(scheduleDoors);
-                break;
-            case "b":
-                controlAllDoors(scheduleDoors);
-                break;
-        
-            default:
-                break;
-        }
     }
 
     public void showDoors() {
@@ -354,100 +337,99 @@ public class PE04_AcarretaAdrian {
     }
 
     public String scheduleSpecificDoor(String door, String currentState, String r) {
-        int startHour,startMinute,startSecond,endHour,endMinute,endSecond;
-        String oldState=currentState;
-        try {
-            System.out.printf(AZUL + "Start time of %s to turn %s\n",door,r);
-            do {
-                System.out.print(AMARILLO + "Choose an hour: " + RESET);
-                startHour=s.nextInt();
-                if (startHour>=0 && startHour <24)
-                    validOpt=true;
-            } while (!validOpt);
-            validOpt=false;
-            do {
-                System.out.print(AMARILLO + "Choose a minute: " + RESET);
-                startMinute=s.nextInt();
-                if (startMinute>=0 && startMinute <60)
-                    validOpt=true;
-            } while (!validOpt);
-            validOpt=false;
-            do {
-                System.out.print(AMARILLO + "Choose a second: " + RESET);
-                startSecond=s.nextInt();
-                if (startSecond>=0 && startSecond <60)
-                    validOpt=true;
-            } while (!validOpt);
-            validOpt=false;
+        if ((currentState.equals("closed") && (r.equalsIgnoreCase("close")) || r.equalsIgnoreCase("unlock")) || (currentState.equals("opened") && r.equalsIgnoreCase("open")) || (currentState.equals("locked") && r.equalsIgnoreCase("lock"))) {
+            messageDoorAlreadyOnOff(door, r);
+        } else {
+            int startHour,startMinute,startSecond,endHour,endMinute,endSecond;
+            String oldState=currentState;
+            try {
+                System.out.printf(AZUL + "Start time of %s to turn %s\n",door,r);
+                do {
+                    System.out.print(AMARILLO + "Choose an hour: " + RESET);
+                    startHour=s.nextInt();
+                    if (startHour>=0 && startHour <24)
+                        validOpt=true;
+                } while (!validOpt);
+                validOpt=false;
+                do {
+                    System.out.print(AMARILLO + "Choose a minute: " + RESET);
+                    startMinute=s.nextInt();
+                    if (startMinute>=0 && startMinute <60)
+                        validOpt=true;
+                } while (!validOpt);
+                validOpt=false;
+                do {
+                    System.out.print(AMARILLO + "Choose a second: " + RESET);
+                    startSecond=s.nextInt();
+                    if (startSecond>=0 && startSecond <60)
+                        validOpt=true;
+                } while (!validOpt);
+                validOpt=false;
 
-            System.out.printf(AZUL + "End time of %s being %s\n",door,r);
-            do {
-                System.out.print(AMARILLO + "Choose an hour: " + RESET);
-                endHour=s.nextInt();
-                if (endHour>=0 && endHour <24)
-                    validOpt=true;
-            } while (!validOpt);
-            validOpt=false;
-            do {
-                System.out.print(AMARILLO + "Choose a minute: " + RESET);
-                endMinute=s.nextInt();
-                if (endMinute>=0 && endMinute <60)
-                    validOpt=true;
-            } while (!validOpt);
-            validOpt=false;
-            do {
-                System.out.print(AMARILLO + "Choose a second: " + RESET);
-                endSecond=s.nextInt();
-                if (endSecond>=0 && endSecond <60)
-                    validOpt=true;
-            } while (!validOpt);
-            validOpt=false;
+                System.out.printf(AZUL + "End time of %s being %s\n",door,r);
+                do {
+                    System.out.print(AMARILLO + "Choose an hour: " + RESET);
+                    endHour=s.nextInt();
+                    if (endHour>=0 && endHour <24)
+                        validOpt=true;
+                } while (!validOpt);
+                validOpt=false;
+                do {
+                    System.out.print(AMARILLO + "Choose a minute: " + RESET);
+                    endMinute=s.nextInt();
+                    if (endMinute>=0 && endMinute <60)
+                        validOpt=true;
+                } while (!validOpt);
+                validOpt=false;
+                do {
+                    System.out.print(AMARILLO + "Choose a second: " + RESET);
+                    endSecond=s.nextInt();
+                    if (endSecond>=0 && endSecond <60)
+                        validOpt=true;
+                } while (!validOpt);
+                validOpt=false;
 
-            for (int day=0;day<=1;day++) {
-                for (int hourCount=0;hourCount<24;hourCount++) {
-                    for (int minuteCount=0;minuteCount<60;minuteCount++) {
-                        for (int secondCount=0;secondCount<60;secondCount++) {
-                            if (startHour>endHour) {
-                                if (day==0) {
+                for (int day=0;day<=1;day++) {
+                    for (int hourCount=0;hourCount<24;hourCount++) {
+                        for (int minuteCount=0;minuteCount<60;minuteCount++) {
+                            for (int secondCount=0;secondCount<60;secondCount++) {
+                                if (startHour>endHour) {
+                                    if (day==0) {
+                                        if (hourCount==startHour && minuteCount==startMinute && secondCount==startSecond) {
+                                            System.out.printf(VERDE + "\nCurrent time is %d:%d:%d\n",hourCount,minuteCount,secondCount);
+                                            currentState = controlDoor(door, currentState, r);
+                                        }
+                                    }
+                                } else { 
                                     if (hourCount==startHour && minuteCount==startMinute && secondCount==startSecond) {
                                         System.out.printf(VERDE + "\nCurrent time is %d:%d:%d\n",hourCount,minuteCount,secondCount);
                                         currentState = controlDoor(door, currentState, r);
                                     }
                                 }
-                            } else {
-                                if (hourCount==startHour && minuteCount==startMinute && secondCount==startSecond) {
-                                    System.out.printf(VERDE + "\nCurrent time is %d:%d:%d\n",hourCount,minuteCount,secondCount);
-                                    currentState = controlDoor(door, currentState, r);
-                                }
-                            }
-                            if (startHour>endHour) {
-                                if (day==1) {
+                                if (startHour>endHour) {
+                                    if (day==1) {
+                                        if (hourCount==endHour && minuteCount==endMinute && secondCount==endSecond) {
+                                            System.out.printf(ROJO + "\nCurrent time is %d:%d:%d\n",hourCount,minuteCount,secondCount);
+                                            currentState = controlDoor(door, currentState, oldState);
+                                        }
+                                    }
+                                } else {
                                     if (hourCount==endHour && minuteCount==endMinute && secondCount==endSecond) {
                                         System.out.printf(ROJO + "\nCurrent time is %d:%d:%d\n",hourCount,minuteCount,secondCount);
                                         currentState = controlDoor(door, currentState, oldState);
                                     }
                                 }
-                            } else {
-                                if (hourCount==endHour && minuteCount==endMinute && secondCount==endSecond) {
-                                    System.out.printf(ROJO + "\nCurrent time is %d:%d:%d\n",hourCount,minuteCount,secondCount);
-                                    currentState = controlDoor(door, currentState, oldState);
-                                }
                             }
                         }
                     }
                 }
+            } catch (InputMismatchException e){
+                System.out.println(ROJO + "(!) Invalid format, please enter an integer");
+
             }
-        } catch (InputMismatchException e){
-            System.out.println(ROJO + "(!) Invalid format, please enter an integer");
         }
         return currentState;
     }
-
-    public String scheduleAllDoors(String door, String currentState, String r) {
-
-        return currentState;
-    }
-
     public void controlSpecificDoor(boolean scheduleDoors) {
         Boolean validOpt = false;
         Boolean validDoor = false;
@@ -542,7 +524,7 @@ public class PE04_AcarretaAdrian {
         return currentState;
     }
 
-    public void controlAllDoors(boolean scheduleDoors) {
+    public void controlAllDoors() {
         System.out.print("Manual - change state of doors: (open/close/lock/unlock) ");
         Boolean validOpt = false;
         do {
